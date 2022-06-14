@@ -1,0 +1,71 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<div class="row">
+    <div class="col-3 mt-2">
+        <input id="ID" value="Show Graph" type="button" class="btn btn-outline-info text-center" />
+    </div>
+    <div class="col-9 text-center">
+        <h1>Table Data View In Charts</h1>
+    </div>
+</div>
+<br />
+<hr style=" height:5px; color:aqua"/>*@
+
+<input id="ID" value="Show Graph" type="button" />
+<br />
+
+    <canvas id="myChart" style="max-height:auto; max-width:auto"></canvas>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script type="text/javascript">
+    $(function() {
+        $("#ID").click(function() {
+    
+            $.ajax({
+                type: "POST",
+                url: "/Charts/GetChartsData",
+                data: "",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnSuccessResult,
+                error: OnError
+            });
+
+
+            function OnSuccessResult(data) {
+                var _data = data;
+                var _chartLabels = _data[0];
+                var _chartData = _data[1];
+                
+                var barColor = ["Red","Blue","Yellow","Green","Purple","Orange","pink","violet","magenta","aqua","Purple","navy"];
+                
+                new Chart("myChart", {
+                   
+                     type: 'line',
+                    data: {
+                        labels: _chartLabels,
+                        datasets: [{
+                        backgroundColor: barColor,
+                        data: _chartData
+                        }]
+                        
+                    }
+                }); 
+
+            }
+
+
+            function OnError(err) {
+
+            }
+        });
+    });
+
+    </script>
